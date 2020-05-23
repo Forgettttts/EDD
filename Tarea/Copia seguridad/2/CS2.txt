@@ -1,0 +1,2 @@
+A este punto ya sabemos que string de S cumplen con la condicion de que tienen como prefijo a P, solo falta arreglar el hecho de que
+no se esta armando bien el arreglo de sttings Ret

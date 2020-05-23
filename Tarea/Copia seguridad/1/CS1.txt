@@ -1,0 +1,1 @@
+Hasta aqui los arreglos quedan bien hechos, printeados con los archivos de prueba

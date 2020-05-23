@@ -1,0 +1,2 @@
+En este punto solo falta hacer los archivos, ya esta hecho el loop para que se llame tantas veces como se necesite a la funcion, segun
+la cantidad de elementos en P
