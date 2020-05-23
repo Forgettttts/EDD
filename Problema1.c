@@ -1,7 +1,7 @@
-/*PROBLEMA 1:
+/*PROBLEMA 1: comienzo
  
 ~Funcion:
-    //TODO char∗∗ buscar_str(char ∗∗ S, int n, char ∗ P)tujju
+    //TODO char∗∗ buscar_str(char ∗∗ S, int n, char ∗ P) 
  
     Se nos entregaran 3 parametros:
         -char** S= //*Un puntero, que apunta a un puntero, el cual apunta a un char. Ya que este es un puntero de puntero, cuando llamemos a la funcion
