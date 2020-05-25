@@ -26,7 +26,7 @@ typedef struct
 * Returns:
     retorna el resultado de invocar a la función busqueda_binaria; spoiler: es un entero.
 *********/
-int buscar(clienteBanco **vector, int buscame, int tamvector)
+int buscar(clienteBanco **vector, int buscame, int tamvector) // Buscaremos en que posicion esta el struct que contiende los datos del cliente, gracias a una busqueda binaria
 {
     return busqueda_binaria(vector, buscame, 0, tamvector - 1);
 }
@@ -59,12 +59,11 @@ int busqueda_binaria(clienteBanco **listastruct, int buscame, int inicio, int fi
     // Para encointrar el punto medio del arreglo
     int ptomedio = inicio + (fin - inicio) / 2;
 
-    if (inicio > fin)
+    if (inicio > fin) // Esto es en el caso de que se hayan ingresado mal el orden de los parametros
     {
         return -1;
     }
-
-    else if ((listastruct[ptomedio]->nroCuenta) == buscame)
+    else if ((listastruct[ptomedio]->nroCuenta) == buscame) // esto es en el caso de que se encuentre inmediatamente el elemento buscado
     {
         return ptomedio;
     }
@@ -88,15 +87,19 @@ actualizarSaldos(char *clientes, char *transacciones)
     listastruct[i] = (clienteBanco *)malloc(sizeof(clienteBanco));
 }
 
-int main()
+int main(int argc, char** argv) //argc= cantidad de elementos que se estan ingresando, **argv= arreglo de strings ingresados
 {
-
     FILE *transacciones = fopen("transacciones.txt", "r");
-
-    int *cuentas = (int *)malloc(sizeof(int) * 2);
-    int monto, pos;
-    char operador;
-    fscanf(transacciones, "%c", operador);
+    if (transacciones == NULL) //revisamos si es que el archivo se abrio bien
+    {
+        printf("Error al abrir el archivo de las transacciones, fin anticipado del programa"); 
+        return 1;
+    }
+    
+    int *cuentas = (int *)malloc(sizeof(int) * 2); //Aqui guardaremos el(los) numero(s) de cuenta(s) que implica la transaccion actual
+    int monto, pos; //En monto se guardara cuanto es el monto de dinero involucrado en esta transaccion, y pos es la posicion del cliente dentro del conjunto de structs clientebanco
+    char operador; // este indica si es que es deposito(+), extraccion(-) o transferencia(>) 
+    fscanf(transacciones, "%c", &operador); // va con & ya que solo es un caracter, no un arreglo
 
     while (operador != EOF)
     {
