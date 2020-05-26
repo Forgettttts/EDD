@@ -2,8 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-
-
 typedef struct
 {
     int nroCuenta;
@@ -12,15 +10,16 @@ typedef struct
     char direccion[51];
 } clienteBanco;
 
-
+//Solo incializamos aqui las funciones, para evitar problemas o warnings en el codigo mas adelante
 int busqueda_binaria(clienteBanco **listastruct, int buscame, int inicio, int fin);
 int buscar(clienteBanco **vector, int buscame, int tamvector);
 void actualizarSaldos(char *clientes, char *transacciones);
 
-
-/*********
+int busqueda_binaria(clienteBanco **listastruct, int buscame, int inicio, int fin)
+{
+    /*********
  * Nombre función: Busqueda_binaria
- * Tipo función: tipo entero (int)
+ * Tipo función: Tipo entero (int)
  *********
 * Resumen:
     Esta función busca un número de cuenta, dentro de los campos de un arreglo de clientes 
@@ -28,21 +27,18 @@ void actualizarSaldos(char *clientes, char *transacciones);
     recursivamente.
  *********
 * Inputs:
-    clienteBanco** listastruct : es un arreglo de punteros a structs de tipo clienteBanco.
-    int buscame : es el número de cuenta que a ecnontrar.
-    int inicio : es el número que epresenta la posición desde donde se comienza a buscar en el arreglo.
-    int fin : es el número que representa la posición hasta la que se termina de buscar en el arreglo.
+    clienteBanco** listastruct : Es un arreglo de punteros a structs de tipo clienteBanco.
+    int buscame : Es el número de cuenta que a encontrar.
+    int inicio : Es el número que representa la posición desde donde se comienza a buscar en el arreglo.
+    int fin : Es el número que representa la posición hasta la que se termina de buscar en el arreglo.
  *********
 * Returns:
-    int pos : es el número que representa la posición dentro del arreglo de clientes, en donde se encuentra
+    int pos : Es el número que representa la posición dentro del arreglo de clientes, en donde se encuentra
     el cliente cuyo númera de cuenta buscábamos.
 *********/
 
 
-int busqueda_binaria(clienteBanco **listastruct, int buscame, int inicio, int fin)
-{
-
-    // Para encointrar el punto medio del arreglo
+    // Definitremos ptomedio, para encointrar el punto medio del arreglo
     int ptomedio = inicio + (fin - inicio) / 2;
 
     if (inicio > fin) { // En caso de que se hayan ingresado mal el orden de los parametros
@@ -64,50 +60,49 @@ int busqueda_binaria(clienteBanco **listastruct, int buscame, int inicio, int fi
     }
 }
 
-
-
-/*********
+int buscar(clienteBanco **vector, int buscame, int tamvector) {
+    /*********
  * Nombre función: Buscar
- * Tipo función: tipo entero (int)
+ * Tipo función: Tipo entero (int)
  *********
 * Resumen:
     Esta función busca un número de cuenta, dentro de un arreglo de clientes del banco (clienteBanco)
     invocando a la función busqueda_binaria.
  *********
 * Inputs:
-    clienteBanco** vector : es un arreglo de punteros a structs de tipo clienteBanco.
-    int buscame : es el numero de cuenta que a ecnontrar.
-    int tamvector : es el tamaño del arreglo de clientes del banco.
+    clienteBanco** vector : Es un arreglo de punteros de tipo clienteBanco(struct) a structs de tipo clienteBanco.
+    int buscame : Es el numero de cuenta que a encontrar.
+    int tamvector : Es el tamaño del arreglo de clientes del banco.
  *********
 * Returns:
-    retorna el resultado de invocar a la función busqueda_binaria; spoiler: es un entero.
+    Retorna la posicion de el struct en el que esta contenido el numero de cuenta buscado, resultado de invocar a 
+    la función busqueda_binaria.
 *********/
-
-int buscar(clienteBanco **vector, int buscame, int tamvector) {
-   // Buscaremos en que posicion esta el struct que contiende los datos del cliente, gracias a una busqueda binaria
     return busqueda_binaria(vector, buscame, 0, tamvector - 1);
 }
 
-/*********
- * Nombre función: actualizar_saldos
- * Tipo función: void*
- *********
-* Resumen: 
-    Esta función actualiza el saldo de los clientes contenidos en un archivo binario.
-    Esto lo realiza, abriendo el archivo, guardando los clientes del banco en un arreglo, modificando sus saldos según las operaciones
-    realizadas por los clientes (descritas en un archivo ASCII de transacciones bancarias), y sobreescribiendo el archivo binario según
-    arreglo actualizado.    
- *********
-* Inputs:
-    char *clientes : Es un string que representa el nombre de un archivo binario que contiene structs de tipo clienteBanco.
-    char *transacciones : Es un string que representa el nombre de un archivo ASCII, el cual contiene las transacciones realizadas por los clientes.
- *********
-* Returns:
-    No retorna nada, pues esta función sólo actualiza sobreescribe el archivo de clientes actualizando sus respectivos saldos.
-*********/
-
 void actualizarSaldos(char *clientes, char *transacciones)
 {
+    /*********
+ * Nombre función: actualizar_saldos
+ * Tipo función: void
+ *********
+* Resumen: 
+    Esta función actualiza el saldo de los clientes contenidos en un archivo binario, esto lo realiza, abriendo el archivo, 
+    guardando los clientes del banco en el arreglo CL (arreglo tipo clientesBanco(struct) de punteros tipo clientesBanco(struct)),
+    modificando sus saldos según las operaciones realizadas por los clientes (descritas en un archivo ASCII de transacciones
+    bancarias), para luego sobreescribir el archivo binario según arreglo actualizado.
+ *********
+* Inputs:
+    char *clientes : Es un string que representa el nombre deL archivo binario que contiene structs de tipo clienteBanco.
+    char *transacciones : Es un string que representa el nombre deL archivo ASCII, que contiene las transacciones realizadas
+    por los clientes.
+ *********
+* Returns:
+    No retorna nada, pues esta función sólo actualiza, sobreescribiendo el archivo de clientes, actualizando sus respectivos saldos.
+*********/
+
+
     // Abrimos el archivo binario clientes.
     FILE *nombin = fopen(clientes, "rb");
     if (nombin == NULL) //revisamos si es que el archivo se abrio bien
@@ -139,7 +134,6 @@ void actualizarSaldos(char *clientes, char *transacciones)
     int *cuentas = (int *)malloc(sizeof(int) * 2); //Aqui guardaremos el(los) numero(s) de cuenta(s) que implica la transaccion actual
     int monto, pos; //En monto se guardara cuanto es el monto de dinero involucrado en esta transaccion, y pos es la posicion del cliente dentro del conjunto de structs clientebanco
     char operador; // este indica si es que es deposito(+), extraccion(-) o transferencia(>) 
-     // va con & ya que solo es un caracter, no un arreglo
 
     while ((fscanf(nomtranx, "%c", &operador)) != EOF)
     {
@@ -188,10 +182,10 @@ void actualizarSaldos(char *clientes, char *transacciones)
     free(CL);
 }
 
-
-
-int main(int argc, char** argv) //argc= cantidad de elementos que se estan ingresando, **argv= arreglo de strings ingresados
+int main(int argc, char** argv) 
 {
+    
+    //argc= cantidad de elementos que se estan ingresando, **argv= arreglo de strings ingresados
     if (argc !=3){
         printf("Se necesitan 2 argumentos a parte del nombre del programa, finalizacion anticipada del programa");
         return 2;
@@ -199,12 +193,5 @@ int main(int argc, char** argv) //argc= cantidad de elementos que se estan ingre
     
     actualizarSaldos(argv[1], argv[2]);
 
-
     return 0;
 }
-
-
-
-
-
-    

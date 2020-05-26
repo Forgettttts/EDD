@@ -31,6 +31,27 @@
 #include <string.h>
 
 char **buscar_str(char **S, int n, char* P, int* m){
+    /*****
+* TipoFunción: Tipo char**
+ NombreFunción: buscar_str
+******
+* Resumen Función: Esta funcion busca aquellas palabras presentes en el archivo S(Presentes aqui gracias al arreglo de punteros
+*tipo char a char del mismo nombre) entregado a esta funcion en el arreglo S, que cumplen con la condicion que tienen como 
+*prefijo al string entregada en el parametro P.
+******
+* Input:
+* char** S = Es un arreglo (tipo char),  de punteros (tipo char) a arreglos de caracteres; almacena los strings del archivo S
+* int n = Un entero que indica la cantidad de strings presentes en S
+* char* P = Es un arreglo de caracteres, almacena el string de P que estamos ocupando como referencia de prefijo
+* int* m = 
+* .......
+******
+* Returns: L
+* TipoRetorno: char**
+* Descripción retorno: Retorna un arreglo (tipo char),  de punteros (tipo char) a arreglos de caracteres, el cual almacena 
+* aquellos strings de S que cumplen con la condicion de tener como prefijo al string P
+*****/
+
     char** Ret= (char**)malloc(sizeof(char*)*n);// Asignamos memoria para el arreglo de string que se retornara
     int tamRet = 0; // tamRet= largo del arreglo de strings Ret, al comienzo es 0
     int largo_P;
@@ -59,8 +80,8 @@ char **buscar_str(char **S, int n, char* P, int* m){
 int main()
 {
     //! Abriremos el archivo correspondiente a S
-    FILE *diccionario;                //Aqui abriremos el archivo que tiene todas las palabras, el que revisaremos
-    diccionario = fopen("S.txt","r"); //diccionario es una variable de tipo puntero que trabaja con el archivo que contiene palabras
+    FILE *diccionario;                //Aqui abriremos el archivo que tiene todas los strings, el que revisaremos
+    diccionario = fopen("S.txt","r"); //diccionario es una variable de tipo puntero que trabaja con el archivo que contiene strings
     if (diccionario == NULL)
     {
         printf("Error al abrir el archivo S, fin anticipado del programa"); // Se asume que el archivo S.txt y el archivo P.txt nunca cambian de nombre
