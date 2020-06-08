@@ -1,7 +1,8 @@
 #include <stdio.h>
+#include "list.h"
 
-intmain()
-{
+
+int main(){
     tLista L;
     initList(&L);
     tElemLista elem; // ... insertar elementos en la lista
@@ -9,6 +10,5 @@ intmain()
         elem = getValue(&L);
         hacerAlgo(elem);
         }deleteList(&L);
-        return 0;
-        }
-    
+    return 0;
+}
