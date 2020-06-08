@@ -180,11 +180,27 @@ void actualizarSaldos(char *clientes, char *transacciones)
         free(CL[i]);
     }
     free(CL);
+    free(cuentas[1]);
+    free(cuentas[0]);
 }
 
 int main(int argc, char** argv) 
 {
-    
+    /*********
+    * Nombre función: main
+    * Tipo función: Tipo entero (int)
+ *********
+* Resumen:
+    *Esta funcion actualiza los saldos de las cuentas que han tenido algun tipo de abono, transaccion o retiro
+ *********
+* Inputs:
+    *argc: Cantidad de elementos en nuestro actualizarSaldos (nos retorna un int)
+    *argv: Arreglo de strings en nuestro actualizarSaldos 
+ *********
+* Returns:
+    * Actualiza los saldos de los clientes que han tenido un abono, retiro o transaccion
+*********/
+
     //argc= cantidad de elementos que se estan ingresando, **argv= arreglo de strings ingresados
     if (argc !=3){
         printf("Se necesitan 2 argumentos a parte del nombre del programa, finalizacion anticipada del programa");
@@ -194,4 +210,6 @@ int main(int argc, char** argv)
     actualizarSaldos(argv[1], argv[2]);
 
     return 0;
+    
+
 }
