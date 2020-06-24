@@ -8,18 +8,19 @@
 #include <stdlib.h>
 
 typedef int tElemLista; //? es un entero, si no me equivoco, es algun elemento dentro de la lista que estamos trabajando
-typedef struct{
+typedef struct//? Struct de una lista
+{
     unsigned int maxSize;  //? Tamaño amximo de la lista
     unsigned int listSize; //? Tamaño actual de la lista
     unsigned int curr;     //? Posicion actual del cursor dentro de la lista (siguiente al ultimo elemento)
     tElemLista *listArray; //?  DIRECCION DE MEMORIA, puntero al elemento en la posicion curr del arreglo listArray de tamaño actual listSize, este es olo un puntero, recien le diremos a que va a apuntar, cuando inicializemos la lista
 } tLista;
 
-void initList(tLista *L){ //?  L =DIRECCION DE MEMORIA
+void initList(tLista *L){ //? Inicializa una lista, L =DIRECCION DE MEMORIA
     L->maxSize= MAXSIZE;
     L->listSize=0; // El tamaño siempre sera 1 mas grande que la pos dl final de la lista
     L->curr=0; // EL cursor se inicializa 1 pos mas adelante que el ultimo elemento ingresado
-    L->listArray= malloc((L->maxSize)*(sizeof(tElemLista)));
+    L->listArray= (tElemLista*)malloc((L->maxSize)*(sizeof(tElemLista)));
 }
 
 void clear(tLista *L){ //?  reinicializa la lista, dejandola inicializada pero vacia
