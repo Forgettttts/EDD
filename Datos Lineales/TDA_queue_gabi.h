@@ -27,7 +27,7 @@ void clear(tQueue *Q)
     Q->prim = 0;
 }
 
-void delete (tQueue *Q)
+void deleteQueue(tQueue *Q)
 {
     free(Q->Qarray);
     Q->ult = -1;
