@@ -3,8 +3,13 @@
 
 typedef int tElemLista;
 
+//!Se modificaron para la tarea 2: struct nodo, insert, printList
+
 typedef struct nodo{ //? TDA de un nodo
-    tElemLista info; //* info de este elemento de la lista
+    //!
+    tElemLista inByte;
+    tElemLista endByte;
+    //!
     struct nodo *sig; //* Este es un puntero a un elemento tipo tNodo, pero omo aunn no le damos ese nombre, tenemos que llamarlo por struct nodo, que es el nombre real
 }tNodo;
 
@@ -19,16 +24,17 @@ typedef struct //? TDA de una lista enlazada
 
 void initList(tLinkedList *L)//? Inicializa una lista enlazada vacia 
 {
-    L->head = L->tail = L->curr = (*tNodo)malloc(sizeof(tNodo)); //* Se asigna el espacio necesario para que podamos incluir un puntero de tipo tNodo, en cada uno de los elementos del struct
+    //* Se asigna el espacio necesario para que podamos incluir un puntero de tipo tNodo, en cada uno de los elementos del struct
+    L->head = L->tail = L->curr = (tNodo*)malloc(sizeof(tNodo));     
     L->listSize = L->pos = 0;                                        //* Ambos se inicializan en 0 porque no tiene elementos aun, y si es que fueramos a agregar algo, se agregaria en la posicion 0
 } 
 
 void clear(tLinkedList *L) //? Vacia una lista, dejandola inicializada, pero vacia
 {
     tNodo *next;
-L->curr = L->head;
-while (L->curr != NULL)
-{
+    L->curr = L->head;
+    while (L->curr != NULL)
+    {
     next = L->curr->sig; //* Aqui decimos que el puntero tipo tNodo next almacenara el siguiente elemento de la lista, al que estamos revisando en este momento
     free(L->curr);
     L->curr = next;
@@ -38,11 +44,12 @@ while (L->curr != NULL)
     L->pos = 0;
 }
 
-int insert(tLinkedList *L, tElemLista item) //? inserta un elemento en la poscion actual, y retorna la poscion en la que el elemento quedo
+int insert(tLinkedList *L, tElemLista in, tElemLista end) //? inserta un elemento en la poscion actual, y retorna la poscion en la que el elemento quedo
 {
     tNodo *aux = L->curr->sig;
     L->curr->sig = (tNodo *)malloc(sizeof(tNodo)); //* En caso de crear un nuevo nodo en la lisa, hay que asignarle memoria suficiente para guardar la cantidad de datos que se le dara
-    L->curr->sig->info = item;
+    L->curr->sig->inByte = in;
+    L->curr->sig->endByte = end;
     L->curr->sig->sig = aux;
     if (L->curr == L->tail)
         L->tail = L->curr->sig;
@@ -54,7 +61,7 @@ int erase(tLinkedList *L) //? Elimina el elemento que esta en la posicion actual
 {
     tNodo *aux; //* Puntero a nodo, auxiliar
     aux=L->curr->sig; //*
-    L->curr->sig=L->curr->sig->sig;
+    L->curr->sig = L->curr->sig->sig;
     free(aux);//* Queremos liberar la memoria de aquello a lo que apunta aux
     L->listSize--;
     return 0; //* Retorna 0 si es que la eliminacion fue exitosa
@@ -127,7 +134,7 @@ void moveToPos(tLinkedList *L, unsigned int posicion)//? Mueve el cursor a una p
     }
 }
 
-void printList(tLinkedList *L) //? Para printear una lista, funcion de la Gabi
+void printList(tLinkedList *L) //? Para printear una lista
 {
     moveToStart(L);
     printf("[");
@@ -135,10 +142,35 @@ void printList(tLinkedList *L) //? Para printear una lista, funcion de la Gabi
     n--;
     for (int i = 0; i < n; i++)
     {
-        printf("%d ,", L->curr->info);
+        printf("%d - %d, ", L->curr->inByte, L->curr->endByte);
         L->pos++;
         L->curr = L->curr->sig;
     }
-    printf("%d]\n", L->curr->sig->info);
+    printf("%d - %d]\n ", L->curr->inByte, L->curr->endByte);
     moveToEnd(L);
+}
+
+int getInValue(tLinkedList *L, unsigned int pos){//? Esta funcion retorna el comienzo del bloque de memoria
+    moveToPos(L, pos);
+    return L->curr->sig->inByte;
+}
+
+int getEndValue(tLinkedList *L, unsigned int pos){//? Esta funcion retorna el fin del bloque de memoria
+    moveToPos(L, pos);
+    return L->curr->sig->endByte;
+}
+
+//? Esta función retorna el tamaño de un bloque en bytes dado un nodo determinado
+int getTamBlock(tLinkedList *L, unsigned int pos){
+    return getEndValue(L, pos) - getInValue(L, pos);
+}
+
+int CambiarFinal(tLinkedList *L, unsigned int valorFinal ){
+    L->curr->endByte=valorFinal;
+    return 0; //retorna 0 si es que el cambio fue exitoso
+}
+
+int CambiarInicio(tLinkedList *L, unsigned int valorInicial){
+    L->curr->inByte=valorInicial;
+    return 0; // Retorna 0 si es que el cambio fue exitoso
 }
