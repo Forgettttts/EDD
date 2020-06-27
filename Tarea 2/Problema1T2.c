@@ -9,7 +9,6 @@
 //TODO: ~(6) Compilar con -W -Wall desde terminal
 
 int FirstFit(tLinkedList* L, int tam){
-
     int size = L->listSize;
     int i;
     for (i=0 ; i < size ; i++)
@@ -17,7 +16,6 @@ int FirstFit(tLinkedList* L, int tam){
         int block = getTamBlock(L, i);
         if (tam < block){
         return i;
-        
         }        
     }
     return -10;
@@ -25,7 +23,6 @@ int FirstFit(tLinkedList* L, int tam){
 
 
 int main(){
-
     FILE *input = fopen("input1.dat", "r");  // Apertura de archivo binario input.dat, en modo lectura y escritura
     if (input== NULL) //comprobacion de apertura exitosa del archivo
     {

@@ -26,7 +26,7 @@ void initList(tLinkedList *L)//? Inicializa una lista enlazada vacia
 {
     //* Se asigna el espacio necesario para que podamos incluir un puntero de tipo tNodo, en cada uno de los elementos del struct
     L->head = L->tail = L->curr = (tNodo*)malloc(sizeof(tNodo));     
-    L->listSize = L->pos = 0;                                        //* Ambos se inicializan en 0 porque no tiene elementos aun, y si es que fueramos a agregar algo, se agregaria en la posicion 0
+    L->listSize = L->pos = 0;//* Ambos se inicializan en 0 porque no tiene elementos aun, y si es que fueramos a agregar algo, se agregaria en la posicion 0
 } 
 
 void clear(tLinkedList *L) //? Vacia una lista, dejandola inicializada, pero vacia
@@ -51,8 +51,8 @@ int insert(tLinkedList *L, tElemLista in, tElemLista end) //? inserta un element
     L->curr->sig->inByte = in;
     L->curr->sig->endByte = end;
     L->curr->sig->sig = aux;
-    if (L->curr == L->tail)
-        L->tail = L->curr->sig;
+    if (L->curr == L->tail) // Ya que el curr no ha cambiado, la pregunta aqui es: ¿El nodo current, antes de la insercion, era el tail?
+        L->tail = L->curr->sig; // Si es que el current, era el tail, ahora como se inserto un nuevo nodo, el cual queda dsp del current, el tail ahora corresponde al nuevo nodo
     L->listSize++;
     return L->pos;
 }
@@ -134,12 +134,11 @@ void moveToPos(tLinkedList *L, unsigned int posicion)//? Mueve el cursor a una p
         while (posicion > L->pos)
             next(L);}
 
-    else{//* Si es que es menor, comienza a buscar desde el principio
+    else{ //* Si es que es menor, comienza a buscar desde el principio
         unsigned int i;
         L->curr = L->head;
         L->pos = 0;
         for (i = 0; i < posicion; i++){
-            
             next(L);
         }
     }
@@ -185,11 +184,3 @@ int CambiarInicio(tLinkedList *L, unsigned int valorInicial){
     L->curr->inByte=valorInicial;
     return 0; // Retorna 0 si es que el cambio fue exitoso
 }
-
-//!tamblock // 5
-
-//!nodolibre // 2-8
-
-//!nuevo_inicio = tamblock + getinvalue(tLinkedList *L, Nodolibre)
-
-//!cambiarinicio(tLinkedList *L, nuevo_inicio)
