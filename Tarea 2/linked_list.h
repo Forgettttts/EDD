@@ -67,6 +67,16 @@ int erase(tLinkedList *L) //? Elimina el elemento que esta en la posicion actual
     return 0; //* Retorna 0 si es que la eliminacion fue exitosa
 }//? Elimina el elemento que esta en la posicion actual
 
+int ListSize(tLinkedList *L)
+{
+    return L->listSize;
+}
+
+int getPos(tLinkedList *L)
+{
+    return L->pos;
+}
+
 void deleteList(tLinkedList *L) //? Elimina todos los elementos de la lista, borrando incluso la inicializacion de la lista
 {
     tNodo *next;
@@ -120,16 +130,17 @@ void moveToPos(tLinkedList *L, unsigned int posicion)//? Mueve el cursor a una p
     if (posicion == L->pos){//* CAMBIO PERSONAL: Si es que es igual, retorna, ya que no hay nada que hacer
         return;}
 
-    else if (posicion > L->pos){ //* CAMBIO PERSONAL: Si es que es mayor que la posicion actual, avanza hasta llegar a la posicion
-        posicion= next(L);}
+    if (posicion > L->pos){ //* CAMBIO PERSONAL: Si es que es mayor que la posicion actual, avanza hasta llegar a la posicion
+        while (posicion > L->pos)
+            next(L);}
 
     else{//* Si es que es menor, comienza a buscar desde el principio
         unsigned int i;
         L->curr = L->head;
         L->pos = 0;
         for (i = 0; i < posicion; i++){
-            L->curr = L->curr->sig;
-            L->pos++;
+            
+            next(L);
         }
     }
 }
@@ -174,3 +185,11 @@ int CambiarInicio(tLinkedList *L, unsigned int valorInicial){
     L->curr->inByte=valorInicial;
     return 0; // Retorna 0 si es que el cambio fue exitoso
 }
+
+//!tamblock // 5
+
+//!nodolibre // 2-8
+
+//!nuevo_inicio = tamblock + getinvalue(tLinkedList *L, Nodolibre)
+
+//!cambiarinicio(tLinkedList *L, nuevo_inicio)
