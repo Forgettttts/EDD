@@ -8,23 +8,30 @@
 //TODO: ~(5) Liberar toda la memoria (usar ctrl f para asegurarnos que hay frees por cada malloc)
 //TODO: ~(6) Compilar con -W -Wall desde terminal
 
+
 int FirstFit(tLinkedList* L, int tam){
-    int size = L->listSize;
+
+    int size = ListSize(L);
     int i;
     for (i=0 ; i < size ; i++)
     {
         int block = getTamBlock(L, i);
-        if (tam < block){
+        if (tam <= block){
         return i;
+        
         }        
     }
     return -10;
 }
 
 
+
+
+
 int main(){
+
     FILE *input = fopen("input1.dat", "r");  // Apertura de archivo binario input.dat, en modo lectura y escritura
-    if (input== NULL) //comprobacion de apertura exitosa del archivo
+    if (input == NULL) //comprobacion de apertura exitosa del archivo
     {
         printf("Problema de apertura de archivo input1.dat, finalizacion anticipada del programa");
         return 1;}
@@ -39,10 +46,10 @@ int main(){
     rewind(input); //Hacemos rewind para asegurarnos de que el cursor esta al inicio del archivo
     int M, N;
     //!fread(&M, sizeof(int), 1, input);
-    // M total de memoria inicial disponible en un solo bloque contiguo
+    // M: total de memoria inicial disponible en un solo bloque contiguo
     fscanf(input, "%d", M);
     //!fread(&N, sizeof(int), 1, input); 
-    // N cantidad de operaciones de petición o liberación de memoria a realizar
+    // N: cantidad de operaciones de petición o liberación de memoria a realizar
     fscanf(input, "%d", N);
 
     //Se crea una variable L1: lista de bloques disponibles
@@ -63,28 +70,46 @@ int main(){
     {
         //Se lee el primer caracter de cada línea
         fread(&id, sizeof(char), 1, input);
-        //Si id es m sabemos que la operación será un malloc, por lo que a la m le proceden 5 caracteres antes del int
+        //Si id es m sabemos que la operación será un malloc, por lo que a la m le proceden 6 caracteres antes del int (5 letras y 1 espacio).
         if (id == "m")
         {
             fseek(input, 6, SEEK_CUR); //?Agregamos el espacio como un caracter contable
-            //fread(&tamblock, sizeof(int),1,input);
+            
             fscanf(input, "%d", tamblock); //* Aqui leemos cuanta memoria tenemos que asignar
 
-            int NodoLibre = FirstFit(L1, tamblock); // Encontramos el primer bloque de memoria que cumple con el espacio suficiente para allocar la memoria solicitada
-            if (NodoLibre = -10){ // Este caso sucede si es que no hay ningun bloquye de memoria con el espacio solicitado
+             // Encontramos el primer bloque de memoria que cumple con el espacio suficiente para allocar la memoria solicitada
+            int NodoLibre = FirstFit(L1, tamblock);
+            
+            if (NodoLibre = -10){ // Este caso sucede si es que no hay ningun bloque de memoria con el espacio solicitado
                 fprintf(output, "%s %d %s", "Bloque de ", tamblock, "bytes NO puede ser asignado\n"); 
             }
-            else if{
+            else {
                 moveToPos(L1, NodoLibre); // Nos movemos al bloque de memoria que puede allocar lo solicitado
-                getEndValue(L1); // Con esto, quitamos de este bloque de memoria, el espacio necesario para tamblock, NOTA: puede tambien quitarse desde el inicio
+                
+                //Se inserta en L2 el Nodo correspondiente al bloque de memoria asignado
+                insert(L2, getInValue(L1, getPosCurr(L1)), (getInValue(L1, getPosCurr(L1)) + tamblock)); 
 
+                int nuevo_in_L1 = (getInValue(L1, getPosCurr(L1)) + tamblock + 1); //* Aqui calculamos el nuevo comienzo del bloque de memoria restante luego de obtener la cantidad de memoria solicitada
+                CambiarInicio(L1, nuevo_in_L1); // Quitamos de este bloque de memoria, el espacio necesario para tamblock (Re-definiendo el comienzo del bloque )
+                
+                fprintf(output, "%s %d %s %d", "Bloque de ", tamblock, " bytes asignado a partir del byte ",  getInValue(L2, getPosCurr(L2)));
+                moveToEnd(L2); //* Luego de insertar, dejamos el current al final de L2 para que la siguiente inserción (ciclo for) se haga al final.
             }
         }
-        //Si id es f sabemos que la operación será un free, por lo que a la f le proceden 3 caracteres antes del int
+        //Si id es f sabemos que la operación será un free, por lo que a la f le proceden 4 caracteres antes del int (3 letras + 1 espacio)
         else if (id == "f")
         {
             fseek(input, 4, SEEK_CUR); //?Agregamos el espacio como un caracter contable
-            fscanf(input, "%d" , bytefree);
+            fscanf(input, "%d" , bytefree); //byetfree es el byte de inico del bloque a liberar
+            //!Falta una linea de codigo que nos mueva el curr de L1 a la pos en donde vamos a insertar el sig elem.
+            
+            
+            
+
+            //Eliminar de la lista L2
+            //? moveToPos(L2, getPos(L2, bytefree)); //No sabemos si el cursor ya está en la posición del elem que queremos eliminar (se movió al hacer getPos(L2, bytefree)?)
+            erase(L2); //!aQUÍ SUPONEMOS QUE EL CURR EN L2 YA ESTÁ POSICIONADO EN, AL HACER getPos(L2, bytefree) EN EL INSERT DE L1
+            
         }
         
     }

@@ -3,13 +3,11 @@
 
 typedef int tElemLista;
 
-//!Se modificaron para la tarea 2: struct nodo, insert, printList
-
 typedef struct nodo{ //? TDA de un nodo
-    //!
+
     tElemLista inByte;
     tElemLista endByte;
-    //!
+
     struct nodo *sig; //* Este es un puntero a un elemento tipo tNodo, pero omo aunn no le damos ese nombre, tenemos que llamarlo por struct nodo, que es el nombre real
 }tNodo;
 
@@ -26,7 +24,7 @@ void initList(tLinkedList *L)//? Inicializa una lista enlazada vacia
 {
     //* Se asigna el espacio necesario para que podamos incluir un puntero de tipo tNodo, en cada uno de los elementos del struct
     L->head = L->tail = L->curr = (tNodo*)malloc(sizeof(tNodo));     
-    L->listSize = L->pos = 0;//* Ambos se inicializan en 0 porque no tiene elementos aun, y si es que fueramos a agregar algo, se agregaria en la posicion 0
+    L->listSize = L->pos = 0; //* Ambos se inicializan en 0 porque no tiene elementos aun, y si es que fueramos a agregar algo, se agregaria en la posicion 0
 } 
 
 void clear(tLinkedList *L) //? Vacia una lista, dejandola inicializada, pero vacia
@@ -51,8 +49,8 @@ int insert(tLinkedList *L, tElemLista in, tElemLista end) //? inserta un element
     L->curr->sig->inByte = in;
     L->curr->sig->endByte = end;
     L->curr->sig->sig = aux;
-    if (L->curr == L->tail) // Ya que el curr no ha cambiado, la pregunta aqui es: ¿El nodo current, antes de la insercion, era el tail?
-        L->tail = L->curr->sig; // Si es que el current, era el tail, ahora como se inserto un nuevo nodo, el cual queda dsp del current, el tail ahora corresponde al nuevo nodo
+    if (L->curr == L->tail)
+        L->tail = L->curr->sig;
     L->listSize++;
     return L->pos;
 }
@@ -72,10 +70,6 @@ int ListSize(tLinkedList *L)
     return L->listSize;
 }
 
-int getPos(tLinkedList *L)
-{
-    return L->pos;
-}
 
 void deleteList(tLinkedList *L) //? Elimina todos los elementos de la lista, borrando incluso la inicializacion de la lista
 {
@@ -101,7 +95,7 @@ void moveToEnd(tLinkedList *L)//? Mueve el cursor de la lista al ultimo elemento
     L->pos = L->listSize;
 }
 
-void prev(tLinkedList *L) //? Mueve el cursor al elemento anterior de la lista
+void prev(tLinkedList *L) //? Mueve sel cursor al elemento anterior de la lista
 {
     if (L->curr == L->head)
         return; //* Si es que estabamos en el primer elemento, no hay nada mas que hacer a si que retornamos
@@ -134,7 +128,7 @@ void moveToPos(tLinkedList *L, unsigned int posicion)//? Mueve el cursor a una p
         while (posicion > L->pos)
             next(L);}
 
-    else{ //* Si es que es menor, comienza a buscar desde el principio
+    else{//* Si es que es menor, comienza a buscar desde el principio
         unsigned int i;
         L->curr = L->head;
         L->pos = 0;
@@ -181,6 +175,88 @@ int CambiarFinal(tLinkedList *L, unsigned int valorFinal ){
 }
 
 int CambiarInicio(tLinkedList *L, unsigned int valorInicial){
-    L->curr->inByte=valorInicial;
+    L->curr->sig->inByte=valorInicial;
     return 0; // Retorna 0 si es que el cambio fue exitoso
 }
+
+int getPosCurr(tLinkedList *L){
+    return L->pos;
+}
+
+int getPos(tLinkedList *L, int inbyte)
+{
+    moveToStart(L);
+    int size = ListSize(L);
+    while (L->pos != size){
+        if (L->curr->sig->inByte == inbyte){
+            return L->pos;
+        }
+        else{
+            next(L);
+        }
+    }
+    return -10;
+}
+
+void buscar_pos_insert(tLinkedList *L, int inbyte, int endbyte){ //!en el programa del problemas vamos a tener que obtener el valor de término mediante getEndValue y chantárselo a esta fun como parametro :D
+
+    moveToStart(L);
+    int size = ListSize(L);
+    while ( L->pos != size){ //* Los casos que pueden salir es de insercion al inicio o dentro
+        while (L->curr->sig->inByte < inbyte){//* Si es que el elemento de la izquierda es menor que el elemento que queremos insertar
+            if (L->curr->sig->sig->inByte > inbyte){ //* Si es que el elemento sigueinte al actual, es mayor al que queremos insertar
+                if(L->curr->sig->endByte == (inbyte - 1)){ //* Si es que el final (endByte) del nodo actual en L1, es antecesor del inbyte del nodo a insertar, se fusionan
+                    if (L->curr->sig->sig->inByte == (endbyte + 1)){ //* Si es que el final del nodo a insertar (endbyte), es antecesor del inByte del siguiente nodo (inByte) se fusionan
+                        L->curr->sig->sig->inByte = L->curr->sig->inByte; //! Entró a los 2 if anteriores, se fusionan los 3 nodos
+                        erase(L);
+                        return; //* Retornamos pq no hay nada mas que hacer
+                    }
+                    else{ //!entró al primer if pero no al segundo, por lo que se fusionan los dos primeros nodos, simplemente se cambia el fin del nodo existente por el fin del nodo que se insertaría
+                        CambiarFinal(L, endbyte);
+                        return; //* Retornamos pq no hay nada mas que hacer
+                    }
+                }
+                else{ //* Si es que no es consecutivo con el actual, entra aqui, pq es un else
+                    if (L->curr->sig->sig->inByte == (endbyte + 1)){//! El final del nodo a insertar (endbyte) se fusiona con el nodo siguiente en L1
+                        next(L);
+                        CambiarInicio(L, inbyte); //!Se fusionan sólo el nodo a insertar y el siguiente del actual en L1
+                        return; //* Retornamos pq no hay nada mas que hacer
+                    }
+                    else{
+                        insert(L, inbyte, endbyte);
+                        return;
+                    } 
+                }
+            }
+            else {
+                next(L);//* Este next es por si no pertenece entre 2 nodos, para avanzar al siguiente
+            }
+            
+        }       
+        //* Si es que no entro al while anterior, es pq es un caso de insercion al inicio
+
+        if (L->curr->sig->inByte == (endbyte + 1)){//* Esto significa que el elemento a insertar es antecesor directo del primer elemento
+            CambiarInicio(L, inbyte); //!Se fusionan sólo el nodo a insertar y el siguiente del actual en L1
+            return; //* Retornamos pq no hay nada mas que hacer
+        }
+
+        //!!HASTA AQUÍ LLEGAMOSSSSS!!! falta caso de inserción al final (cambiar el tail y ver caso de fusión)
+        else{
+                next(L);
+        }
+        
+        else
+        { //*Este caso es por si es que la insercion debe realizarse en el inicio
+            return;
+        }
+    }
+    return;//* En este caso, el curr quedo en el tail, por lo que no entro en el while, esto significa que la insercion del elemento se hara al fina, actualizando el tail
+    
+}
+
+
+
+
+
+
+
