@@ -242,12 +242,10 @@ void buscar_pos_insert(tLinkedList *L, tElemLista in2, tElemLista end2){
 //in2 es el inicio del nodo que queremos insertar en L1
 //end2 es el final del nodo que queremos inserterar en L1
     moveToStart(L);
-
     int size = ListSize(L);
 
     //Iteramos en la lista mientras que la posición no sea igual al size, pues pos = {0,1,2...} y size = {1,2,3...} con pos = (size-1)
     while( L->pos < size){
-
         //?CASO COLA
         if (L->curr->sig == L->tail){ 
             //Tenemos que revisar 4 casos, debido a que la lista puede tener 1 elemento y ese unico elemento sería tail
@@ -279,10 +277,8 @@ void buscar_pos_insert(tLinkedList *L, tElemLista in2, tElemLista end2){
             //*-----------------------------------------------------    
         }
         
-        
         //*CASO INTERMEDIO 
         if((in2 > L->curr->sig->endByte) && (end2 < L->curr->sig->sig->inByte)){
-
             //Si no esta ni al inicio, ni al final, hay que encontrar entre que nodos está
 
             //*FUSÓN 3 NODOS (ANTERIOR, ACTUAL A INSERTAR, SIGUIENTE)
@@ -301,7 +297,6 @@ void buscar_pos_insert(tLinkedList *L, tElemLista in2, tElemLista end2){
             }
             //*-----------------------------------------------------
  
-
             //*FUSIÓN CON NODO SIGUIENTE
             else if(L->curr->sig->sig->inByte == (end2 + 1)){
                 next(L);
@@ -316,8 +311,6 @@ void buscar_pos_insert(tLinkedList *L, tElemLista in2, tElemLista end2){
                 return;
             }
         }
-
-        
 
         //*CASO INICIO
         if (L->curr->sig->inByte > end2){
