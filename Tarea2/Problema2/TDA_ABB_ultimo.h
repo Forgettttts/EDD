@@ -163,6 +163,11 @@ void predecesorHelp(treeNode* nodo, tipoElem antecesor, treeNode* pred, treeNode
     {
         *retornito= &nodo;
         *pred->info=getValue(nodo);
+        if (*pred->info == antecesor)
+        {
+            return; //* Retornamos si es que lo de antentro del if se cumple, ya uqe se encontro el antecesor justo.
+        }
+        
     }
 
     if (antecesor < getValue(nodo)){
