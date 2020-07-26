@@ -1,25 +1,25 @@
 30
-sucesor 15
-insertar 10
-insertar 6
-insertar 19
-sucesor 7
-preorden
-insertar 8
-insertar 11
-preorden
-sucesor 8
-sucesor 11
-insertar 9
-insertar 15
-sucesor 8
-sucesor 11
-insertar 21
-borrar 19
-insertar 3
-sucesor 5
-sucesor 10
-sucesor 17
-sucesor 20
-sucesor 22
-preorden
+SUCESOR 15
+INSERTAR 10
+INSERTAR 6
+INSERTAR 19
+SUCESOR 7
+PREORDEN
+INSERTAR 8
+INSERTAR 11
+PREORDEN
+SUCESOR 8
+SUCESOR 11
+INSERTAR 9
+INSERTAR 15
+SUCESOR 8
+SUCESOR 11
+INSERTAR 21
+BORRAR 19
+INSERTAR 3
+SUCESOR 5
+SUCESOR 10
+SUCESOR 17
+SUCESOR 20
+SUCESOR 22
+PREORDEN

@@ -12,7 +12,8 @@ int prueba(int* antecesor){
 
 int main(){
     int antecesor=1;
-    printf("Inicialmente tiene un valor de %d\n", antecesor);
+    int* direccion= &antecesor;
+    printf("Inicialmente tiene un valor de %d, con una direccion de =\n", antecesor);
     if (prueba(&antecesor)==0){
         printf("Retorna, con un valor de %d\n", antecesor);
     }
